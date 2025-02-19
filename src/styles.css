@@ -57,7 +57,18 @@ body {
     background-color: red;
     border-radius: 15px;
     color: white;
-    margin-left: 390px;
+    margin-left: 20px;
+}
+
+.done_btn {
+    width: 120px;
+    height: 29px;
+    border: none;
+    border: 1px solid yellowgreen;
+    background-color: yellowgreen;
+    border-radius: 15px;
+    color: white;
+    margin-left: 290px;
 }
 
 .todo-text {

@@ -42,8 +42,9 @@ function App() {
     <ul className="main_box">
       {
         todos.map((todo) => (
-          <div key={todo.id} className={`Box ${todo.done ? "completed" : ""}`}>
-            <span onClick={() => toggleStatus(todo.id)} className="todo-text">{todo.tittle}</span>
+          <div key={todo.id} className="Box">
+            <span className={`todo-text ${todo.done ? "completed" : ""}`}>{todo.tittle}</span>
+            <button  onClick={() => toggleStatus(todo.id)} className="done_btn">Done</button>
             <button onClick={() => deleteTodo(todo.id)} className="remove_btn">Remove</button>
           </div>
         ))
