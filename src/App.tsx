@@ -39,7 +39,7 @@ function App() {
     <input onChange={(e) => setInput(e.target.value)} className="input" value={input} type="text" />
     <button className="add_btn" onClick={addTodo}>Add</button>
    
-    <ul className="main_box">
+    <div className="main_box">
       {
         todos.map((todo) => (
           <div key={todo.id} className="Box">
@@ -49,7 +49,7 @@ function App() {
           </div>
         ))
       }
-    </ul>
+    </div>
     </>
   )
 }
