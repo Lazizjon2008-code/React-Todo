@@ -13,7 +13,7 @@ body {
     background-color: aliceblue;
 }
 
-.submit {
+.add_btn{
     width: 90px;
     height: 45px;
     border-radius: 15px;
@@ -49,7 +49,7 @@ body {
     gap: 20px;
 }
 
-.removebtn {
+.remove_btn {
     width: 120px;
     height: 29px;
     border: none;
@@ -57,16 +57,13 @@ body {
     background-color: red;
     border-radius: 15px;
     color: white;
-    margin-left: 350px;
+    margin-left: 390px;
 }
 
-.addbtn{
-    width: 100px;
-    height: 29px;
-    border: none;
-    border: 1px solid yellowgreen;
-    background-color: yellowgreen;
-    border-radius: 15px;
-    color: white;
-    margin-left: 20px;
+.todo-text {
+    margin-left: 15px;
+}
+
+.completed {
+    text-decoration: line-through;
 }
