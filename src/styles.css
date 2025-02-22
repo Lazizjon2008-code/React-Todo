@@ -1,3 +1,8 @@
+.container {
+    width: 1350px;
+    margin: 0 auto;
+}
+
 .input {
     width: 500px; 
     height: 45px;
@@ -5,7 +10,7 @@
     font-size: 16px;
     padding-left: 15px;
     color: black;
-    margin-left: 680px;
+    margin-left: 400px;
     background-color: beige;
 }
 
@@ -38,6 +43,7 @@ body {
     box-shadow: 3px 8px 10px 5px rgba(0, 0, 0, 0.299);
     padding-left: 15px;
     background-color: blanchedalmond;
+    margin-left: 50px;
 }
 
 .main_box {
