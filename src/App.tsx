@@ -28,6 +28,12 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [input, setInput] = useState<string>("")
 
+  const cookieTodos = getCookie("todos")
+
+  if(cookieTodos) {
+    console.log(setTodos(JSON.parse(cookieTodos)))
+  }, [])
+
 
   useEffect(  () => {
     const cookieTodos = getCookie("todos")
@@ -43,7 +49,8 @@ function App() {
 
   function addTodo() {
     if(!input.trim()) return;
-    setTodos([...todos, {id: Date.now(), tittle: input, done: false}])
+    const newTodo = {id: Date.now(), tittle: input, done: false}
+    setTodos(prevTodos => [...prevTodos, newTodo])
     setInput("")
   }
 
@@ -60,6 +67,7 @@ function App() {
 
   function deleteTodo(id: number) {
     setTodos(todos.filter((todo) => todo.id !== id))
+    setCookie("todos", JSON.stringify(todos) )
   }
 
   console.log(todos);
