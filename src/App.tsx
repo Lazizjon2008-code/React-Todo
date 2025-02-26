@@ -25,17 +25,47 @@ interface Todo {
 function App() {
 
 
+  interface Option {
+    method: string;
+    headers: {
+      "Content-Type": string;
+    }
+    body: string | null
+  }
+async function makeRequest(url: string, method: string, data = null) {
+ 
+  
+  const options: Option = {
+      method: method,
+      headers: {
+        "Content-Type": "application.json",
+      },
+      body: data ? JSON.stringify(data) : null,
+    };
+  
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  // async function GetAll() {
+  //   const url = `http://192.168.1.43:8080/todos`
+
+  //   const response = await fetch(url )
+  // }
+
   const [todos, setTodos] = useState<Todo[]>([])
   const [input, setInput] = useState<string>("")
 
-  const cookieTodos = getCookie("todos")
 
-  if(cookieTodos) {
-    console.log(setTodos(JSON.parse(cookieTodos)))
-  }, [])
-
-
-  useEffect(  () => {
+  useEffect( () => {
     const cookieTodos = getCookie("todos")
     if(cookieTodos){
       setTodos(JSON.parse(cookieTodos))
