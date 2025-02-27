@@ -18,54 +18,39 @@ function getCookie(name: string) {
 
 interface Todo {
   id: number;
-  tittle: string;
+  title: string;
   done: boolean;
+  className: string;
 }
 
 function App() {
 
-
-  interface Option {
-    method: string;
-    headers: {
-      "Content-Type": string;
-    }
-    body: string | null
-  }
-async function makeRequest(url: string, method: string, data = null) {
- 
   
-  const options: Option = {
-      method: method,
-      headers: {
-        "Content-Type": "application.json",
-      },
-      body: data ? JSON.stringify(data) : null,
-    };
-  
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  }
-
-  // async function GetAll() {
-  //   const url = `http://192.168.1.43:8080/todos`
-
-  //   const response = await fetch(url )
-  // }
-
   const [todos, setTodos] = useState<Todo[]>([])
   const [input, setInput] = useState<string>("")
 
+  useEffect(() => {
+    async function fetchTodos() {
+      try {
+          const response = await fetch('http://192.168.1.37:8080/todos'); 
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          const todos = await response.json();
+          setTodos(todos)
+          return todos;
+      } catch (error) {
+          console.error("Error fetching todos:", error);
+          return [];
+      }
+  }
+  fetchTodos()
+  }, [])
 
-  useEffect( () => {
+
+
+
+  useEffect(  () => {
     const cookieTodos = getCookie("todos")
     if(cookieTodos){
       setTodos(JSON.parse(cookieTodos))
@@ -77,15 +62,17 @@ async function makeRequest(url: string, method: string, data = null) {
   }, [todos])
 
 
+
   function addTodo() {
     if(!input.trim()) return;
-    const newTodo = {id: Date.now(), tittle: input, done: false}
+    const newTodo = {id: Date.now(), title: input, done: false, className: ""}
     setTodos(prevTodos => [...prevTodos, newTodo])
     setInput("")
   }
 
   function toggleStatus(id: number) {
     setTodos(todos.map((todo) => {
+      
       if(todo.id === id) {
         todo.done = !todo.done
         return todo
@@ -100,7 +87,6 @@ async function makeRequest(url: string, method: string, data = null) {
     setCookie("todos", JSON.stringify(todos) )
   }
 
-  console.log(todos);
   
   return (
     <>
@@ -112,8 +98,8 @@ async function makeRequest(url: string, method: string, data = null) {
       {
         todos.map((todo) => (
           <div key={todo.id} className="Box">
-            <span className={`todo-text ${todo.done ? "completed" : ""}`}>{todo.tittle}</span>
-            <button  onClick={() => toggleStatus(todo.id)} className="done_btn">Done</button>
+            <span className={`todo-text ${todo.done ? "completed" : ""}`}>{todo.title}</span>
+            <button onClick={() => toggleStatus(todo.id)} className="done_btn">Done</button>
             <button onClick={() => deleteTodo(todo.id)} className="remove_btn">Remove</button>
           </div>
         ))
