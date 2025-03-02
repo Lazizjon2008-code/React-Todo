@@ -23,6 +23,7 @@ interface Todo {
   className: string;
 }
 
+
 function App() {
 
   
@@ -32,7 +33,7 @@ function App() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-          const response = await fetch('http://192.168.1.37:8080/todos'); 
+          const response = await fetch('http://192.168.1.61:8080/todos'); 
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -49,7 +50,6 @@ function App() {
 
 
 
-
   useEffect(  () => {
     const cookieTodos = getCookie("todos")
     if(cookieTodos){
@@ -61,12 +61,44 @@ function App() {
     setCookie("todos", JSON.stringify(todos))
   }, [todos])
 
+async function makeRequest() {
+    const url = 'http://192.168.1.61:8080/todos/create'
+
+    interface Data {
+      title: string;
+      done: boolean
+    }
+ 
+    const data: Data = {
+      title: input,
+      done: false,
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application.json",
+        },
+        body: JSON.stringify(data)
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log(await response.json())
+    } catch (error) {
+      console.error('Error creating todo:', error);
+    }
+}
 
 
   function addTodo() {
     if(!input.trim()) return;
     const newTodo = {id: Date.now(), title: input, done: false, className: ""}
     setTodos(prevTodos => [...prevTodos, newTodo])
+    makeRequest(input)
     setInput("")
   }
 
@@ -80,11 +112,35 @@ function App() {
       return todo
     }))
   }
+
+  async function DeleteRequest(id: number) {
+    const url = 'http://192.168.1.61:8080/todos/delete'
+  
+  
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application.json",
+        },
+        body: JSON.stringify({ id })
+      })
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      console.log(await response.json())
+    } catch (error) {
+      console.error('Error creating todo:', error);
+    }
+  }
   
 
   function deleteTodo(id: number) {
     setTodos(todos.filter((todo) => todo.id !== id))
     setCookie("todos", JSON.stringify(todos) )
+    DeleteRequest(id)
   }
 
   
