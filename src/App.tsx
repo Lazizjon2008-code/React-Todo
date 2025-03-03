@@ -102,6 +102,40 @@ async function makeRequest() {
     setInput("")
   }
 
+  async function updateRequest() {
+    const url = 'http://192.168.1.61:8080/todos/update'
+
+    interface UpdateData {
+      id: number;
+      title: string;
+      done: boolean
+    }
+ 
+    const data: UpdateData = {
+      id: todos.id,
+      title: input,
+      done: true,
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application.json",
+        },
+        body: JSON.stringify(data)
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log(await response.json())
+    } catch (error) {
+      console.error('Error creating todo:', error);
+    }
+}
+
   function toggleStatus(id: number) {
     setTodos(todos.map((todo) => {
       
